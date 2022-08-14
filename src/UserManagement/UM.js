@@ -5,6 +5,8 @@ import "../style/UM.css"
 import { MdDelete, MdOutlineUpdate } from 'react-icons/md'
 import DataTable from "react-data-table-component";
 
+import moment from "moment";
+
 //fungsi export.
 function convertArrayOfObjectsToCSV(array) {
     let result;
@@ -43,7 +45,7 @@ function downloadCSV(array) {
     link.setAttribute('download', filename);
     link.click();
 }
-const Export = ({ onExport }) => <Button onClick={e => onExport(e.target.value)}>Export</Button>;
+const Export = ({ onExport }) => <Button  className="content2" onClick={e => onExport(e.target.value)}>Export</Button>;
 
 
 
@@ -95,7 +97,7 @@ export const Filtering = () => {
         },
         {
             name: "joined",
-            selector: row => row.joined,
+            selector: row => moment(row.joined).format('MMMM DD, YYYY'),
             sortable: true,
             center: true,
 
@@ -224,7 +226,7 @@ export const Filtering = () => {
                     value={filterE}
                     onChange={(e) => setFilterE(e.target.value)}
                 />
-                <span className="end"> {actionsMemo} <Button onClick={handleBuka}> + New User </Button></span>
+                <span className="end"> {actionsMemo} </span> <span><Button onClick={handleBuka}> + New User </Button></span>
                 <Modal
                     show={buka}
                     onHide={handleTutup}

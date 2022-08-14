@@ -1,5 +1,6 @@
 import React from "react";
 import { Navbar, Button, Container } from "react-bootstrap";
+import logo from '../assets/image/D.png';
 function Header({ active, setActive }) {
   return (
     <Container>
@@ -19,14 +20,16 @@ function Header({ active, setActive }) {
           <i className="fas fa-bars"></i>
         </Button>
         <div className={active ? "" : "n-active"}>
-          <Navbar.Text className="text-end">
+          <i className="fas fa-bell" style={{marginRight:"35px"}}></i>
+          <Navbar.Text className="text-end" style={{marginRight:"15px "}}>
             Ida ayu made dyah kusuma
           </Navbar.Text>
           <img
             width="40"
             height="40"
-            className="justify-content-end me-3 rounded-circle img-thumbnail shadow-sm"
-            src="https://rashed-abir.web.app/static/media/rashed%20abir.bad348d4.JPEG"
+            className="justify-content-end me-3 rounded-circle "
+            style={{width:"35px", height:"35px"}}
+            src={logo}
             alt="l"
           />
         </div>

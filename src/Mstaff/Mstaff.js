@@ -1,6 +1,7 @@
 import { Button, Row, Col, Modal, Form } from "react-bootstrap";
 import { data } from "../assets/data/mockData";
 import React, { useState } from "react";
+import "../style/style.css"
 import { MdOutlineUpdate } from 'react-icons/md'
 import DataTable from "react-data-table-component";
 
@@ -48,15 +49,25 @@ const Export = ({ onExport }) => <Button onClick={e => onExport(e.target.value)}
 const customStyles = {
     rows: {
         style: {
-
+            fontFamily: "Roboto",
+            fontStyle: "normal",
+            fontWeight: "400",
+            lineHeight: "150%",
+            textTransform: "capitalize"
         },
     },
     headCells: {
         style: {
-            backgroundColor:"#FFFFFF",
-            color:"black"
+            backgroundColor: "#FFF",
+            color: "black"
         },
     },
+    checkboxs: {
+        style: {
+            backgroundColor: "none"
+        }
+    }
+
 };
 
 // paginasi
@@ -95,13 +106,13 @@ export const Mstaff = () => {
             selector: row => row.skill,
             sortable: true,
             center: true,
-            
-                    style: {
-                        borderRadius: '25px',
-                        margin: '7px 5px 7px 5px',
-                        backgroundColor: '#DC3545',
-                        color: 'white',
-                    },
+
+            style: {
+                borderRadius: '25px',
+                margin: '7px 5px 7px 5px',
+                backgroundColor: '#DC3545',
+                color: 'white',
+            },
         },
         {
             name: "edit",
@@ -121,7 +132,6 @@ export const Mstaff = () => {
 
     //modal edit
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -143,6 +153,17 @@ export const Mstaff = () => {
         item => item.name.toLowerCase().includes(filterText.toLowerCase())
     );
 
+    //jadwal
+    const [senin, setSenin] = React.useState('');
+    const [aSenin, setaSenin] = React.useState('');
+    const [selasa, setSelasa] = React.useState('');
+    const [rabu, setRabu] = React.useState('');
+    const [kamis, setKamis] = React.useState('');
+    const [jumat, setJumat] = React.useState('');
+    const [sabtu, setSabtu] = React.useState('');
+    const [istirahat, setIstirahat] = React.useState('');
+
+
     //download csv {file}
     const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(selectedRows)} />, [selectedRows]);
 
@@ -157,7 +178,7 @@ export const Mstaff = () => {
                     value={filterText}
                     onChange={(e) => setFilterText(e.target.value)}
                 />
-                
+
                 <span className="end"> {actionsMemo} <Button onClick={handleBuka}> + New User </Button></span>
                 <Modal
                     show={buka}
@@ -212,11 +233,11 @@ export const Mstaff = () => {
                                 </Col>
                             </Row>
                             <div className="col-md-5 mx-auto">
-                            <Button variant="primary" type="submit" >
-                                Submit
-                            </Button>
+                                <Button variant="primary" type="submit" >
+                                    Submit
+                                </Button>
                             </div>
-                           
+
                         </Form>
                     </Modal.Body>
                 </Modal>
@@ -230,146 +251,87 @@ export const Mstaff = () => {
                     size="lg"
                     center
                 >
-                    <Modal.Header closeButton> 
-                            <Row>
-                                <Col>
-                                    <img src="..." className="img" alt="image" />
-                                </Col>
-                                <Col className="nama">
-                                    <div>YUNI</div>
-                                    <div>Team IT</div>
-                                </Col>
-                                <Col className="nama">
-                                    <div> Backend Developer</div>
-                                </Col>
-                            </Row>
-
+                    <Modal.Header closeButton>
+                        <Row>
+                            <Col>
+                                <img src="..." className="img" alt="image" />
+                            </Col>
+                            <Col className="nama">
+                                <div>YUNI</div>
+                                <div>Team IT</div>
+                            </Col>
+                            <Col className="nama">
+                                <div> Backend Developer</div>
+                            </Col>
+                        </Row>
                     </Modal.Header>
                     <Modal.Body className="Mbody">
                         <div >
+                            <Form> 
                             <Row>
                                 <Col>
-                                <div className="hari"> Senin</div>
+                                    <div className="hari"> Senin</div>
                                 </Col>
-                                <Col>
-                                8
+                                <Col className="">
+                                    <input type="time"
+                                        className="inputJam"
+                                        step="3600000"
+                                        id="time"
+                                        value={senin}
+                                        placeholder="Time"
+                                        onChange={(e) => setSenin(e.target.value)}
+                                    />
                                 </Col>
                                 sampai
                                 <Col>
-                                8
+                                <input type="time"
+                                        className="inputJam"
+                                        step="3600000"
+                                        id="time"
+                                        value={aSenin}
+                                        placeholder="Time"
+                                        onChange={(e) => setaSenin(e.target.value)}
+                                    />
                                 </Col>
                                 istirahat
                                 <Col>
-                                8
+                                    <input type="time"
+                                    className="inputJam"
+                                    step="3600000"
+                                    id="time"
+                                    value={istirahat}
+                                    placeholder="Time"
+                                    onChange={(e) => setIstirahat(e.target.value)} />
                                 </Col>
                                 sampai
                                 <Col>
-                                8
+                                    menampilkan time + 1
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
-                                <div className="hari"> Selasa</div>
-                                </Col>
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                                istirahat
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                <div className="hari"> Rabu</div>
-                                </Col>
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                                istirahat
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                <div className="hari">Kamis</div>
-                                </Col>
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                                istirahat
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                <div className="hari">Jumat</div>
-                                </Col>
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                                istirahat
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                <div className="hari"> Sabtu</div>
+                                    <div className="hari"> Sabtu</div>
                                 </Col>
                                 <Col>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
-                                <div className="hari"> Minggu</div>
+                                    <div className="hari"> Minggu</div>
                                 </Col>
                                 <Col>
                                 </Col>
                             </Row>
+                            </Form>
                         </div>
                         <div className="mt-2 end">
                             <span>
-                            <Button variant="secondary" onClick={handleClose}>
-                            Back
-                        </Button>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Back
+                                </Button>
                             </span>
                             <span>
-                            <Button variant="primary">Save</Button>
+                                <Button variant="primary">Save</Button>
                             </span>
                         </div>
                     </Modal.Body>

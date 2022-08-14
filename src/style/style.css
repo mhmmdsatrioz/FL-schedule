@@ -3,7 +3,7 @@
     background-image: url(../assets/image/bg.jpg);
 
     background-position: center;
-    background-size:cover;
+    background-size: cover;
     height: 100vh;
     font-family: "Roboto";
 }
@@ -30,8 +30,8 @@
     line-height: 80px;
     color: #FFFFFF;
     width: 700px;
-   margin-left: 300px;
-    
+    margin-left: 300px;
+
 }
 
 .Signin {
@@ -81,9 +81,10 @@
 
 
 /*Lform*/
-.Container{
+.Container {
     font-family: "Roboto";
 }
+
 .Fcon {
     background-color: white;
     text-align: center;
@@ -92,13 +93,14 @@
     padding: 50px 50px;
 
 }
+
 .space {
     padding-top: 158px;
     margin: 0px 390px;
-  
+
 }
 
-.dash{
+.dash {
     padding-top: 7px;
     height: 60px;
     font-weight: 700;
@@ -106,63 +108,83 @@
     font-size: 24px;
     letter-spacing: 0.3px;
 }
-.textE{
+
+.textE {
     padding-top: 7px;
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.3px;
-    
+
 }
-.Temail{
+
+.Temail {
     padding-top: 28px;
     height: 64px;
     padding-left: 32px;
     padding-right: 32px;
     text-align: left;
 }
-a:hover{ 
-    color: blue !important;
-}
-
-.mb{
+.mb {
     margin-bottom: 180px;
 
 }
-.logoSide{
+
+/* sidebar header*/
+a:hover {
+    color: blue !important;
+}
+
+.logoSide {
     width: 32px;
     height: 32px;
 }
 
-.nav-link.active{
+.nav-link.active {
     background-color: #dc3545 !important;
     color: #FFFFFF !important;
-    margin: 15px 0px;
+    margin: 15px 20px;
 }
-.nav-link{
+
+.nav-link {
     color: #FFFFFF !important;
     margin: 5px 0px;
 }
 
-.note.active{
+.note.active {
     background-color: #dc3545 !important;
     color: #FFFFFF !important;
-    margin: 15px 0px;
+    margin: 15px 20px;
 }
-.note{
+
+.note {
     color: #FFFFFF !important;
 }
 
-.atas{
+.atas {
     font-family: 'Roboto';
-font-style: normal;
-font-weight: 700;
-font-size: 19px;
-line-height: 24px;
-letter-spacing: 0.4px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 24px;
+    letter-spacing: 0.4px;
 }
 
-.notes{
+.notes {
     margin-top: 125%;
     text-align: center;
+}
+
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    width: 20px;
+    height: 14px;
+    background: url("https://mywildalberta.ca/images/GFX-MWA-Parks-Reservations.png")no-repeat;
+}
+/**/
+header{
+    font-family: 'Roboto';
+}
+.edit{
+    font-family: 'Roboto';
 }
