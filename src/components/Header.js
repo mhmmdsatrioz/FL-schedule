@@ -3,7 +3,7 @@ import { Navbar, Button, Container } from "react-bootstrap";
 import logo from '../assets/image/D.png';
 function Header({ active, setActive }) {
   return (
-    <Container>
+    <Container className="edit">
       <header
         className={
           active ? "sidebar_active p-3 d-flex justify-content-between" : "p-3 sidebar d-flex justify-content-between"

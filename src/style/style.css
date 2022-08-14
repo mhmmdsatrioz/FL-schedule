@@ -182,9 +182,16 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     background: url("https://mywildalberta.ca/images/GFX-MWA-Parks-Reservations.png")no-repeat;
 }
 /**/
-header{
-    font-family: 'Roboto';
-}
 .edit{
+    font-family: 'Roboto';
+    text-transform: capitalize;
+}
+
+
+/**/
+.TextU{
+    margin-right: 30px;
+}
+.back{
     font-family: 'Roboto';
 }

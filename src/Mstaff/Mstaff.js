@@ -5,46 +5,6 @@ import "../style/style.css"
 import { MdOutlineUpdate } from 'react-icons/md'
 import DataTable from "react-data-table-component";
 
-//fungsi export.
-function convertArrayOfObjectsToCSV(array) {
-    let result;
-    const columnDelimiter = ',';
-    const lineDelimiter = '\n';
-    const keys = Object.keys(data[0]);
-    result = '';
-    result += keys.join(columnDelimiter);
-    result += lineDelimiter;
-    array.forEach(item => {
-        let ctr = 0;
-        keys.forEach(key => {
-            if (ctr > 0) result += columnDelimiter;
-
-            result += item[key];
-            // eslint-disable-next-line no-plusplus
-            ctr++;
-        });
-        result += lineDelimiter;
-    });
-    return result;
-}
-// Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
-function downloadCSV(array) {
-    const link = document.createElement('a');
-    let csv = convertArrayOfObjectsToCSV(array);
-    if (csv == null) return;
-
-    const filename = 'export.csv';
-
-    if (!csv.match(/^data:text\/csv/i)) {
-        csv = `data:text/csv;charset=utf-8,${csv}`;
-    }
-
-    link.setAttribute('href', encodeURI(csv));
-    link.setAttribute('download', filename);
-    link.click();
-}
-const Export = ({ onExport }) => <Button onClick={e => onExport(e.target.value)}>Export</Button>;
-
 //style
 const customStyles = {
     rows: {
@@ -72,8 +32,8 @@ const customStyles = {
 
 // paginasi
 const paginationComponentOptions = {
-    rowsPerPageText: 'Per Page',
-    rangeSeparatorText: 'Dari',
+    rowsPerPageText: 'Rows for Page',
+    rangeSeparatorText: 'of',
     selectAllRowsItem: true,
     selectAllRowsItemText: 'ALL',
 
@@ -163,84 +123,88 @@ export const Mstaff = () => {
     const [sabtu, setSabtu] = React.useState('');
     const [istirahat, setIstirahat] = React.useState('');
 
-
-    //download csv {file}
-    const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(selectedRows)} />, [selectedRows]);
-
     return (
         <div className="back mt-3">
-            <div className="content">
-                <input className="content1"
-                    id="search"
-                    type="text"
-                    placeholder="Search ..."
-                    aria-label="Search Input"
-                    value={filterText}
-                    onChange={(e) => setFilterText(e.target.value)}
-                />
+            <div className="content d-flex justify-content-between">
+                <div className="d-flex ">
+                    <h5 className="TextU pt-1">User List</h5>
+                    <input className="content1"
+                        id="search"
+                        type="text"
+                        placeholder="Search ..."
+                        aria-label="Search Input"
+                        value={filterText}
+                        onChange={(e) => setFilterText(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <span className="end"><Button onClick={handleBuka}> ADD NEW   +</Button></span>
+                    <Modal
+                        show={buka}
+                        onHide={handleTutup}
+                        backdrop="static"
+                        size="lg"
+                        keyboard={false}
+                        centered
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title>New User</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form>
+                                <Row>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                                            <Form.Label>Name</Form.Label>
+                                            <Form.Control type="text" placeholder="Full Name" />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                                            <Form.Label>Skill</Form.Label>
+                                            <Form.Control type="text" placeholder="Skill" />
+                                        </Form.Group>
 
-                <span className="end"> {actionsMemo} <Button onClick={handleBuka}> + New User </Button></span>
-                <Modal
-                    show={buka}
-                    onHide={handleTutup}
-                    backdrop="static"
-                    size="lg"
-                    keyboard={false}
-                    centered
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>New User</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form>
-                            <Row>
-                                <Col>
-                                    <Form.Group className="mb-6" controlId="formBasicEmail">
-                                        <Form.Label>Email address</Form.Label>
-                                        <Form.Control type="email" placeholder="Enter email" />
-                                    </Form.Group>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Email Id</Form.Label>
+                                            <Form.Control type="email" placeholder="Email" />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Phone Number</Form.Label>
+                                            <Form.Control type="text" placeholder="Phone Number" />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Password</Form.Label>
+                                            <Form.Control type="password" placeholder="Password" />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Conf Password</Form.Label>
+                                            <Form.Control type="password" placeholder="Confirm Password" />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                <Row className="col-md-8 mx-auto">
+                                    <Button bsPrefix="addButton" variant="primary" type="submit" >
+                                        Save
+                                    </Button>
+                                </Row>
 
-                                </Col>
-                                <Col>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>Password</Form.Label>
-                                        <Form.Control type="password" placeholder="Password" />
-                                    </Form.Group>
-                                </Col>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>Password</Form.Label>
-                                        <Form.Control type="password" placeholder="Password" />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>Password</Form.Label>
-                                        <Form.Control type="password" placeholder="Password" />
-                                    </Form.Group>
-                                </Col>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>Permissions</Form.Label>
-                                        <Form.Control type="password" placeholder="Password" />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <div className="col-md-5 mx-auto">
-                                <Button variant="primary" type="submit" >
-                                    Submit
-                                </Button>
-                            </div>
-
-                        </Form>
-                    </Modal.Body>
-                </Modal>
+                            </Form>
+                        </Modal.Body>
+                    </Modal>
+                </div>
             </div>
             <div className="border">
                 <Modal
@@ -249,7 +213,7 @@ export const Mstaff = () => {
                     backdrop="static"
                     keyboard={false}
                     size="lg"
-                    center
+                    centered
                 >
                     <Modal.Header closeButton>
                         <Row>
@@ -267,61 +231,61 @@ export const Mstaff = () => {
                     </Modal.Header>
                     <Modal.Body className="Mbody">
                         <div >
-                            <Form> 
-                            <Row>
-                                <Col>
-                                    <div className="hari"> Senin</div>
-                                </Col>
-                                <Col className="">
-                                    <input type="time"
-                                        className="inputJam"
-                                        step="3600000"
-                                        id="time"
-                                        value={senin}
-                                        placeholder="Time"
-                                        onChange={(e) => setSenin(e.target.value)}
-                                    />
-                                </Col>
-                                sampai
-                                <Col>
-                                <input type="time"
-                                        className="inputJam"
-                                        step="3600000"
-                                        id="time"
-                                        value={aSenin}
-                                        placeholder="Time"
-                                        onChange={(e) => setaSenin(e.target.value)}
-                                    />
-                                </Col>
-                                istirahat
-                                <Col>
-                                    <input type="time"
-                                    className="inputJam"
-                                    step="3600000"
-                                    id="time"
-                                    value={istirahat}
-                                    placeholder="Time"
-                                    onChange={(e) => setIstirahat(e.target.value)} />
-                                </Col>
-                                sampai
-                                <Col>
-                                    menampilkan time + 1
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <div className="hari"> Sabtu</div>
-                                </Col>
-                                <Col>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <div className="hari"> Minggu</div>
-                                </Col>
-                                <Col>
-                                </Col>
-                            </Row>
+                            <Form>
+                                <Row>
+                                    <Col>
+                                        <div className="hari"> Senin</div>
+                                    </Col>
+                                    <Col className="">
+                                        <input type="time"
+                                            className="inputJam"
+                                            step="3600000"
+                                            id="time"
+                                            value={senin}
+                                            placeholder="Time"
+                                            onChange={(e) => setSenin(e.target.value)}
+                                        />
+                                    </Col>
+                                    sampai
+                                    <Col>
+                                        <input type="time"
+                                            className="inputJam"
+                                            step="3600000"
+                                            id="time"
+                                            value={aSenin}
+                                            placeholder="Time"
+                                            onChange={(e) => setaSenin(e.target.value)}
+                                        />
+                                    </Col>
+                                    istirahat
+                                    <Col>
+                                        <input type="time"
+                                            className="inputJam"
+                                            step="3600000"
+                                            id="time"
+                                            value={istirahat}
+                                            placeholder="Time"
+                                            onChange={(e) => setIstirahat(e.target.value)} />
+                                    </Col>
+                                    sampai
+                                    <Col>
+                                        menampilkan time + 1
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <div className="hari"> Sabtu</div>
+                                    </Col>
+                                    <Col>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <div className="hari"> Minggu</div>
+                                    </Col>
+                                    <Col>
+                                    </Col>
+                                </Row>
                             </Form>
                         </div>
                         <div className="mt-2 end">

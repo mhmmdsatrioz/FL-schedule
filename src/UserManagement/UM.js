@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import "../style/UM.css"
 import { MdDelete, MdOutlineUpdate } from 'react-icons/md'
 import DataTable from "react-data-table-component";
-
 import moment from "moment";
 
 //fungsi export.
@@ -45,14 +44,14 @@ function downloadCSV(array) {
     link.setAttribute('download', filename);
     link.click();
 }
-const Export = ({ onExport }) => <Button  className="content2" onClick={e => onExport(e.target.value)}>Export</Button>;
+const Export = ({ onExport }) => <Button className="content2" onClick={e => onExport(e.target.value)}>Export</Button>;
 
 
 
 // paginasi
 const paginationComponentOptions = {
-    rowsPerPageText: 'Per Page',
-    rangeSeparatorText: 'Dari',
+    rowsPerPageText: 'Rows for Page',
+    rangeSeparatorText: 'of',
     selectAllRowsItem: true,
     selectAllRowsItemText: 'ALL',
 
@@ -60,14 +59,14 @@ const paginationComponentOptions = {
 const customStyles = {
     rows: {
         style: {
-             // override the row height
-             borderBottomStyle:'none !important',
-            borderBottomColor:'none'
+            // override the row height
+            borderBottomStyle: 'none !important',
+            borderBottomColor: 'none'
 
         },
     },
-    head:{
-        style:{
+    head: {
+        style: {
             backgroundColor: '#F2ad00',
         }
     }
@@ -124,6 +123,7 @@ export const Filtering = () => {
                         margin: '7px 5px 7px 5px',
                         backgroundColor: '#DC3545',
                         color: 'white',
+
                     },
                 },
                 {
@@ -166,14 +166,10 @@ export const Filtering = () => {
     ];
 
     //modal edit
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
     //modal add
     const [buka, setBuka] = useState(false);
-    const handleTutup = () => setBuka(false);
+    const handleClose = () => setBuka(false);
     const handleBuka = () => setBuka(true);
 
     //select row
@@ -199,251 +195,106 @@ export const Filtering = () => {
 
     return (
         <div className="back mt-3">
-            <div className="content">
-                <input className="content1"
-                    id="search"
-                    type="text"
-                    placeholder="Filter By Name"
-                    aria-label="Search Input"
-                    value={filterText}
-                    onChange={(e) => setFilterText(e.target.value)}
-                />
-                <select
-                    onChange={(e) => setFilterS(e.target.value)}
-                    className="content1"
-                    aria-label="Filter user">
-                    <option value="">Permissions ALL</option>
-                    {filterPerm.map((item) => (
-                        <option value={item}>{item}</option>
-                 ))}
-                </select>
-                <input
-                    className="content1"
-                    id="search"
-                    type="text"
-                    placeholder="Filter By Email"
-                    aria-label="Search Input"
-                    value={filterE}
-                    onChange={(e) => setFilterE(e.target.value)}
-                />
-                <span className="end"> {actionsMemo} </span> <span><Button onClick={handleBuka}> + New User </Button></span>
-                <Modal
-                    show={buka}
-                    onHide={handleTutup}
-                    backdrop="static"
-                    size="lg"
-                    keyboard={false}
-                    centered
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>New User</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form>
-                            <Row>
-                                <Col>
-                                    <Form.Group className="mb-6" controlId="formBasicEmail">
-                                        <Form.Label>Email address</Form.Label>
-                                        <Form.Control type="email" placeholder="Enter email" />
-                                    </Form.Group>
+            <div className="content d-flex justify-content-between">
+                <div>
+                    <input className="content1"
+                        id="search"
+                        type="text"
+                        placeholder="Filter By Name"
+                        aria-label="Search Input"
+                        value={filterText}
+                        onChange={(e) => setFilterText(e.target.value)}
+                    />
+                    <select
+                        onChange={(e) => setFilterS(e.target.value)}
+                        className="content1"
+                        aria-label="Filter user">
+                        <option value="">Permissions ALL</option>
+                        {filterPerm.map((item) => (
+                            <option value={item}>{item}</option>
+                        ))}
+                    </select>
+                    <input
+                        className="content1"
+                        id="search"
+                        type="text"
+                        placeholder="Filter By Email"
+                        aria-label="Search Input"
+                        value={filterE}
+                        onChange={(e) => setFilterE(e.target.value)}
+                    /></div>
+                <div>
+                    <span className="end"> {actionsMemo} </span>
+                    <span><Button className="content3" onClick={handleBuka}> + New User </Button></span>
+                    <Modal
+                        show={buka}
+                        onHide={handleClose}
+                        backdrop="static"
+                        size="lg"
+                        keyboard={false}
+                        centered
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title>New User</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form>
+                                <Row>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                                            <Form.Label>Full Name</Form.Label>
+                                            <Form.Control type="text" placeholder="Full Name" />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                                            <Form.Label>Permisions</Form.Label>
+                                            <Form.Control type="text" placeholder="Skill" />
+                                        </Form.Group>
 
-                                </Col>
-                                <Col>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>Password</Form.Label>
-                                        <Form.Control type="password" placeholder="Password" />
-                                    </Form.Group>
-                                </Col>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>Password</Form.Label>
-                                        <Form.Control type="password" placeholder="Password" />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>Password</Form.Label>
-                                        <Form.Control type="password" placeholder="Password" />
-                                    </Form.Group>
-                                </Col>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                                        <Form.Label>Permissions</Form.Label>
-                                        <Form.Control type="password" placeholder="Password" />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <div className="col-md-5 mx-auto">
-                            <Button variant="primary" type="submit" >
-                                Submit
-                            </Button>
-                            </div>
-                           
-                        </Form>
-                    </Modal.Body>
-                </Modal>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Email Id</Form.Label>
+                                            <Form.Control type="email" placeholder="Email" />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Location</Form.Label>
+                                            <Form.Control type="text" placeholder="Phone Number" />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Password</Form.Label>
+                                            <Form.Control type="password" placeholder="Password" />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Conf Password</Form.Label>
+                                            <Form.Control type="password" placeholder="Confirm Password" />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                <Row className="col-md-8 mx-auto">
+                                    <Button bsPrefix="addButton" variant="primary" type="submit" >
+                                        Save
+                                    </Button>
+                                </Row>
+
+                            </Form>
+                        </Modal.Body>
+                    </Modal>
+                </div>
             </div>
             <div className="border">
-                <Modal
-                    show={show}
-                    onHide={handleClose}
-                    backdrop="static"
-                    keyboard={false}
-                    size="lg"
-                    center
-                >
-                    <Modal.Header closeButton> 
-                            <Row>
-                                <Col>
-                                    <img src="..." className="img" alt="image" />
-                                </Col>
-                                <Col className="nama">
-                                    <div>YUNI</div>
-                                    <div>Team IT</div>
-                                </Col>
-                                <Col className="nama">
-                                    <div> Backend Developer</div>
-                                </Col>
-                            </Row>
-
-                    </Modal.Header>
-                    <Modal.Body className="Mbody">
-                        <div >
-                            <Row>
-                                <Col>
-                                <div className="hari"> Senin</div>
-                                </Col>
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                                istirahat
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                <div className="hari"> Selasa</div>
-                                </Col>
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                                istirahat
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                <div className="hari"> Rabu</div>
-                                </Col>
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                                istirahat
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                <div className="hari">Kamis</div>
-                                </Col>
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                                istirahat
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                <div className="hari">Jumat</div>
-                                </Col>
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                                istirahat
-                                <Col>
-                                8
-                                </Col>
-                                sampai
-                                <Col>
-                                8
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                <div className="hari"> Sabtu</div>
-                                </Col>
-                                <Col>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                <div className="hari"> Minggu</div>
-                                </Col>
-                                <Col>
-                                </Col>
-                            </Row>
-                        </div>
-                        <div className="mt-2 end">
-                            <span>
-                            <Button variant="secondary" onClick={handleClose}>
-                            Back
-                        </Button>
-                            </span>
-                            <span>
-                            <Button variant="primary">Save</Button>
-                            </span>
-                        </div>
-                    </Modal.Body>
-                </Modal>
-
-                <DataTable q
+                <DataTable 
                     title="User"
                     columns={columns}
                     data={filteredItems}
