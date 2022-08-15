@@ -127,7 +127,6 @@
 }
 .mb {
     margin-bottom: 180px;
-
 }
 
 /* sidebar header*/
@@ -143,7 +142,8 @@ a:hover {
 .nav-link.active {
     background-color: #dc3545 !important;
     color: #FFFFFF !important;
-    margin: 15px 20px;
+    margin: 15px 22px;
+    
 }
 
 .nav-link {
