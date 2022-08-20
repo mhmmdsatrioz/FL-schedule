@@ -3,13 +3,15 @@ import React from "react";
 import { useState } from "react";
 import logo from '../assets/image/D.png';
 import "../style/style.css";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function SignIn() {
+  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confPassword, setConfPassword] = useState('');
-  const [msg, setMsg] = useState('');
+  const [role, setRole] = useState('');
+
   //login
 
   const handleEmailChange = e => {
@@ -18,11 +20,19 @@ function SignIn() {
   const handlePasswordChange = e => {
     setPassword(e.target.value)
   };
+  const handleConfPasswordChange = e => {
+    setConfPassword(e.target.value)
+  };
+  const handleRole = e => {
+    setRole(e.target.value)
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let item = { password, email }
+    let item = { email ,password, confPassword, role}
     console.warn(item);
-    let result = await fetch("http://localhost:3000/course_ms/register", {
+    let result = await fetch("http://localhost:3000/users", {
       method: 'POST',
       body: JSON.stringify(item),
       headers: {
@@ -32,7 +42,7 @@ function SignIn() {
     });
     result = await result.json()
     localStorage.setItem("user-info", JSON.stringify(result));
-
+    history.push("/muser");
   }
   return (
     <div className="bgLogin">
@@ -63,7 +73,23 @@ function SignIn() {
                       <div>PASSWORD </div>
                     </Form.Label>
                     <Form.Control size="lg" type="password" placeholder="Password"
-                      onChange={handlePasswordChange} value={password}
+                     onChange={handlePasswordChange} value={password}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label className="d-flex justify-content-between">
+                      <div>CONFIRM PASSWORD </div>
+                    </Form.Label>
+                    <Form.Control size="lg" type="password" placeholder="Password"
+                     onChange={handleConfPasswordChange} value={confPassword}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label className="d-flex justify-content-between">
+                      <div>role </div>
+                    </Form.Label>
+                    <Form.Control size="lg" type="text" placeholder="role"
+                      onChange={handleRole} value={role}
                     />
                   </Form.Group>
                   <div className="mb d-grid">

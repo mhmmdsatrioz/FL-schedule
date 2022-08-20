@@ -2,7 +2,8 @@ import { Button, Row, Col, Modal, Form } from "react-bootstrap";
 import { data } from "../assets/data/mockData";
 import React, { useState } from "react";
 import "../style/UM.css"
-import { MdDelete, MdOutlineUpdate } from 'react-icons/md'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt,faEdit } from '@fortawesome/free-solid-svg-icons';
 import DataTable from "react-data-table-component";
 import moment from "moment";
 
@@ -61,13 +62,14 @@ const customStyles = {
         style: {
             // override the row height
             borderBottomStyle: 'none !important',
-            borderBottomColor: 'none'
-
+            borderBottomColor: 'none',
+            margin:'3px 0px'
         },
     },
-    head: {
-        style: {
-            backgroundColor: '#F2ad00',
+    pagination:{
+        style:{
+            borderBlockStart: 'none',
+            margin:'7px 0px 0px 0px'
         }
     }
 };
@@ -153,11 +155,10 @@ export const Filtering = () => {
                 <div>
                     <Row>
                         <Col>
-                            <MdDelete onClick={() => alert(row.id)} />
+                            <FontAwesomeIcon size="lg" icon={faTrashAlt} onClick={() => alert(row.id)} />
                         </Col>
                         <Col>
-
-                            <MdOutlineUpdate onClick={() => alert(row.id)} />
+                            <FontAwesomeIcon size="lg" icon={faEdit} onClick={() => alert(row.id)} />
                         </Col>
                     </Row>
                 </div>
@@ -165,12 +166,51 @@ export const Filtering = () => {
         }
     ];
 
+    const checkbox = React.forwardRef(({ onClick, ...rest }, ref) =>
+    {
+     return(
+         <>
+             <div className="form-check " style={{ backgroundColor: '' }}>
+                 <input 
+                     type="checkbox"
+                     className="form-check-input"
+                     ref={ref}
+                     onClick={ onClick }
+                     {...rest}
+                 />
+             </div>
+         </>
+     )
+    })
+
     //modal edit
 
     //modal add
     const [buka, setBuka] = useState(false);
     const handleClose = () => setBuka(false);
     const handleBuka = () => setBuka(true);
+
+    const [nama, setNama] = useState("");
+    const [permisions, setPermisions] = useState("");
+    const [email, setEmail] = useState("");
+    const [location, setLocation] = useState("");
+    const [password, setPassword] = useState("");
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        let item = { nama, email, permisions, location, password }
+        console.warn(item);
+        let result = await fetch("http://localhost:3000/course_ms/add_user", {
+            method: 'POST',
+            body: JSON.stringify(item),
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        });
+        result = await result.json()
+        localStorage.setItem("user-info", JSON.stringify(result));
+    }
+
 
     //select row
     const [selectedRows, setSelectedRows] = React.useState([]);
@@ -194,13 +234,13 @@ export const Filtering = () => {
     const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(selectedRows)} />, [selectedRows]);
 
     return (
-        <div className="back mt-3">
-            <div className="content d-flex justify-content-between">
+        <div className="back mt-4">
+            <div className="content d-flex justify-content-between mb-3">
                 <div>
                     <input className="content1"
                         id="search"
                         type="text"
-                        placeholder="Filter By Name"
+                        placeholder="Search Name"
                         aria-label="Search Input"
                         value={filterText}
                         onChange={(e) => setFilterText(e.target.value)}
@@ -218,13 +258,13 @@ export const Filtering = () => {
                         className="content1"
                         id="search"
                         type="text"
-                        placeholder="Filter By Email"
+                        placeholder="Search Email"
                         aria-label="Search Input"
                         value={filterE}
                         onChange={(e) => setFilterE(e.target.value)}
                     /></div>
                 <div>
-                    <span className="end"> {actionsMemo} </span>
+                    <span className="end" style={{marginRight:'35px'}}> {actionsMemo} </span>
                     <span><Button className="content3" onClick={handleBuka}> + New User </Button></span>
                     <Modal
                         show={buka}
@@ -238,18 +278,22 @@ export const Filtering = () => {
                             <Modal.Title>New User</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Form>
+                            <Form onSubmit={handleSubmit}>
                                 <Row>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label>Full Name</Form.Label>
-                                            <Form.Control type="text" placeholder="Full Name" />
+                                            <Form.Control type="text" placeholder="Full Name"
+                                                value={nama}
+                                                onChange={(e) => setNama(e.target.value)} />
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label>Permisions</Form.Label>
-                                            <Form.Control type="text" placeholder="Skill" />
+                                            <Form.Control type="text" placeholder="permission"
+                                                value={permisions}
+                                                onChange={(e) => setPermisions(e.target.value)} />
                                         </Form.Group>
 
                                     </Col>
@@ -258,13 +302,17 @@ export const Filtering = () => {
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicPassword">
                                             <Form.Label>Email Id</Form.Label>
-                                            <Form.Control type="email" placeholder="Email" />
+                                            <Form.Control type="email" placeholder="Email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)} />
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicPassword">
                                             <Form.Label>Location</Form.Label>
-                                            <Form.Control type="text" placeholder="Phone Number" />
+                                            <Form.Control type="text" placeholder="Location"
+                                                value={location}
+                                                onChange={(e) => setLocation(e.target.value)} />
                                         </Form.Group>
                                     </Col>
                                 </Row>
@@ -272,13 +320,9 @@ export const Filtering = () => {
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formBasicPassword">
                                             <Form.Label>Password</Form.Label>
-                                            <Form.Control type="password" placeholder="Password" />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Conf Password</Form.Label>
-                                            <Form.Control type="password" placeholder="Confirm Password" />
+                                            <Form.Control type="password" placeholder="Password"
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)} />
                                         </Form.Group>
                                     </Col>
                                 </Row>
@@ -294,7 +338,7 @@ export const Filtering = () => {
                 </div>
             </div>
             <div className="border">
-                <DataTable 
+                <DataTable
                     title="User"
                     columns={columns}
                     data={filteredItems}
@@ -308,7 +352,7 @@ export const Filtering = () => {
                     onSelectedRowsChange={handleRowSelected}
                     noHeader
                     customStyles={customStyles}
-                    fixedHeaderScrollHeight="760px"
+                    selectableRowsComponent={checkbox}
                 />
             </div>
         </div >

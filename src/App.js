@@ -8,7 +8,14 @@ import LForm from "./halamanAwal/FormLogin"
 import SignUp from "./halamanAwal/SignUp"
 import Filtering from "./UserManagement/UM";
 import Mstaff from "./Mstaff/Mstaff";
-
+function setToken(userToken) {
+  sessionStorage.setItem('token', JSON.stringify(userToken));
+}
+function getToken() {
+  const tokenString = sessionStorage.getItem('token');
+  const userToken = JSON.parse(tokenString);
+  return userToken?.token
+}
 function App() {
   return (
     <Router>

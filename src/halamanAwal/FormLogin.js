@@ -21,22 +21,22 @@ function LForm() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let result = await fetch("http://localhost:3000/course_ms/login", {
+        let result = await fetch("http://localhost:3000/login", {
             method: 'POST',
             body: JSON.stringify({ email, password }),
             headers: {
                 "Content-Type": "application/json"
             }
         }).catch((error) => {
-            console.error('Error:', error);
+            console.log(error);
         });
-        if (result.status === 401) {
-            setMsg(true);
-        } else {
+        if (result.status === 200) {
             result = await result.json();
             console.warn(result)
             localStorage.setItem('token', JSON.stringify(result));
             history.push("/muser");
+        } else {
+            setMsg(true);
         }
     }
     return (

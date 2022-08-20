@@ -2,8 +2,10 @@ import { Button, Row, Col, Modal, Form } from "react-bootstrap";
 import { data } from "../assets/data/mockData";
 import React, { useState } from "react";
 import "../style/style.css"
-import { MdOutlineUpdate } from 'react-icons/md'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import DataTable from "react-data-table-component";
+import moment from "moment";
 
 //style
 const customStyles = {
@@ -15,18 +17,21 @@ const customStyles = {
             lineHeight: "150%",
             textTransform: "capitalize"
         },
+        input: {
+            style: {
+                filter: 'invert(10%) hue-rotate(10deg) brightness(1) !important'
+            }
+        }
     },
+
     headCells: {
         style: {
             backgroundColor: "#FFF",
-            color: "black"
+            color: "black",
+            borderTopStyle: 'outset',
+            borderTopWidth: '1px',
         },
     },
-    checkboxs: {
-        style: {
-            backgroundColor: "none"
-        }
-    }
 
 };
 
@@ -81,14 +86,14 @@ export const Mstaff = () => {
                 <div>
                     <Row>
                         <Col>
-
-                            <MdOutlineUpdate onClick={() => handleShow(row.id)} />
+                            <FontAwesomeIcon size="lg" icon={faEdit} onClick={() =>handleShow(row.id)} />
                         </Col>
                     </Row>
                 </div>
             )
         }
     ];
+   
 
     //modal edit
     const [show, setShow] = useState(false);
@@ -122,23 +127,26 @@ export const Mstaff = () => {
     const [jumat, setJumat] = React.useState('');
     const [sabtu, setSabtu] = React.useState('');
     const [istirahat, setIstirahat] = React.useState('');
+    var travelTime = moment(setIstirahat).add({ minutes : 60 });
 
     return (
         <div className="back mt-3">
-            <div className="content d-flex justify-content-between">
-                <div className="d-flex ">
+            <div className="content d-flex mb-4 ">
+                
                     <h5 className="TextU pt-1">User List</h5>
-                    <input className="content1"
+                    <Button style={{marginRight:"30px", backgroundColor:'#233EAE', height:"37px", width:"135px", borderRadius:"50px" }}
+                    onClick={handleBuka}> ADD NEW   +</Button>
+                    <input className="text-center"
+                    style={{color:"white",background:"#233EAE",borderRadius:"50px", marginBottom:"20px", height:"37px", width:"135px"  }}
                         id="search"
                         type="text"
-                        placeholder="Search ..."
+                        placeholder=" 
+                        Search ..."
                         aria-label="Search Input"
                         value={filterText}
                         onChange={(e) => setFilterText(e.target.value)}
                     />
-                </div>
-                <div>
-                    <span className="end"><Button onClick={handleBuka}> ADD NEW   +</Button></span>
+            
                     <Modal
                         show={buka}
                         onHide={handleTutup}
@@ -204,9 +212,9 @@ export const Mstaff = () => {
                             </Form>
                         </Modal.Body>
                     </Modal>
-                </div>
+                
             </div>
-            <div className="border">
+            <div >
                 <Modal
                     show={show}
                     onHide={handleClose}
@@ -239,7 +247,6 @@ export const Mstaff = () => {
                                     <Col className="">
                                         <input type="time"
                                             className="inputJam"
-                                            step="3600000"
                                             id="time"
                                             value={senin}
                                             placeholder="Time"
@@ -250,7 +257,6 @@ export const Mstaff = () => {
                                     <Col>
                                         <input type="time"
                                             className="inputJam"
-                                            step="3600000"
                                             id="time"
                                             value={aSenin}
                                             placeholder="Time"
@@ -261,15 +267,63 @@ export const Mstaff = () => {
                                     <Col>
                                         <input type="time"
                                             className="inputJam"
-                                            step="3600000"
-                                            id="time"
                                             value={istirahat}
                                             placeholder="Time"
-                                            onChange={(e) => setIstirahat(e.target.value)} />
+                                            onChange={(e) => setIstirahat(e.target.value)} 
+                                            id="startTime"/>
                                     </Col>
                                     sampai
                                     <Col>
-                                        menampilkan time + 1
+                                    <input type="time"
+                                            className="inputJam"
+                                            value={travelTime}
+                                            placeholder="Time"
+                                            onChange={(e) => setIstirahat(e.target.value)} 
+                                            id="startTime"/>
+                                            
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <div className="hari"> Senin</div>
+                                    </Col>
+                                    <Col className="">
+                                        <input type="time"
+                                            className="inputJam"
+                                            id="time"
+                                            value={senin}
+                                            placeholder="Time"
+                                            onChange={(e) => setSenin(e.target.value)}
+                                        />
+                                    </Col>
+                                    sampai
+                                    <Col>
+                                        <input type="time"
+                                            className="inputJam"
+                                            id="time"
+                                            value={aSenin}
+                                            placeholder="Time"
+                                            onChange={(e) => setaSenin(e.target.value)}
+                                        />
+                                    </Col>
+                                    istirahat
+                                    <Col>
+                                        <input type="time"
+                                            className="inputJam"
+                                            value={istirahat}
+                                            placeholder="Time"
+                                            onChange={(e) => setIstirahat(e.target.value)} 
+                                            id="startTime"/>
+                                    </Col>
+                                    sampai
+                                    <Col>
+                                    <input type="time"
+                                            className="inputJam"
+                                            value={travelTime}
+                                            placeholder="Time"
+                                            onChange={(e) => setIstirahat(e.target.value)} 
+                                            id="startTime"/>
+                                            
                                     </Col>
                                 </Row>
                                 <Row>

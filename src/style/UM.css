@@ -67,15 +67,6 @@
    font-size: 15px !important;
 }
 
-.rdt_TableCell input {
-    filter: invert(80%) hue-rotate(0deg) brightness(1.5) !important;
-
-}
-
-.rdt_TableCol input {
-    filter: invert(80%) hue-rotate(180deg) brightness(1.5) !important;
-
-}
 .rdt_Pagination{
     font-family: 'Roboto' !important;
     font-size: 15px !important;
@@ -121,7 +112,16 @@ input[type="checkbox"] {
 .addButton{
     background-color: #6CC4F4;
     height: 35px;
-    border-radius: 8px ;
+    border-radius: 8px;
 }
 
+
+.form-check{ 
+    filter: invert(70%) hue-rotate(180deg) brightness(1.5) !important;
+}
+.form-check .input{ 
+    width: 10px !important;
+    height: 30px !important;
+    padding: 30px 20px 30px 20px !important;
+}
 

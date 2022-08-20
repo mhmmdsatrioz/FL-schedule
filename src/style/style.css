@@ -138,23 +138,26 @@ a:hover {
     width: 32px;
     height: 32px;
 }
+header{
+    z-index: 1000;
+}
 
 .nav-link.active {
     background-color: #dc3545 !important;
     color: #FFFFFF !important;
-    margin: 15px 22px;
+    margin: 15px 10px 20px 36px;
     
 }
 
 .nav-link {
     color: #FFFFFF !important;
-    margin: 5px 0px;
+    margin: 5px 0px 5px 5px;
 }
 
 .note.active {
     background-color: #dc3545 !important;
     color: #FFFFFF !important;
-    margin: 15px 20px;
+    margin: 15px 0px 20px 0px;
 }
 
 .note {
@@ -195,3 +198,4 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .back{
     font-family: 'Roboto';
 }
+
