@@ -1,51 +1,12 @@
 import { Button, Row, Col, Modal, Form } from "react-bootstrap";
-import { data } from "../assets/data/mockData";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../style/UM.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashAlt,faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import DataTable from "react-data-table-component";
 import moment from "moment";
-
-//fungsi export.
-function convertArrayOfObjectsToCSV(array) {
-    let result;
-    const columnDelimiter = ',';
-    const lineDelimiter = '\n';
-    const keys = Object.keys(data[0]);
-    result = '';
-    result += keys.join(columnDelimiter);
-    result += lineDelimiter;
-    array.forEach(item => {
-        let ctr = 0;
-        keys.forEach(key => {
-            if (ctr > 0) result += columnDelimiter;
-
-            result += item[key];
-            // eslint-disable-next-line no-plusplus
-            ctr++;
-        });
-        result += lineDelimiter;
-    });
-    return result;
-}
-// Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
-function downloadCSV(array) {
-    const link = document.createElement('a');
-    let csv = convertArrayOfObjectsToCSV(array);
-    if (csv == null) return;
-
-    const filename = 'export.csv';
-
-    if (!csv.match(/^data:text\/csv/i)) {
-        csv = `data:text/csv;charset=utf-8,${csv}`;
-    }
-
-    link.setAttribute('href', encodeURI(csv));
-    link.setAttribute('download', filename);
-    link.click();
-}
-const Export = ({ onExport }) => <Button className="content2" onClick={e => onExport(e.target.value)}>Export</Button>;
+import axios from "axios";
+import { useHistory, Link } from "react-router-dom";
 
 
 
@@ -63,19 +24,20 @@ const customStyles = {
             // override the row height
             borderBottomStyle: 'none !important',
             borderBottomColor: 'none',
-            margin:'3px 0px'
+            margin: '3px 0px'
         },
     },
-    pagination:{
-        style:{
+    pagination: {
+        style: {
             borderBlockStart: 'none',
-            margin:'7px 0px 0px 0px'
+            margin: '7px 0px 0px 0px'
         }
     }
 };
 
 //Crud, select, search
 export const Filtering = () => {
+    const history = useHistory();
     //menampilkan kolom dan isi tabel.
     const columns = [
         {
@@ -105,12 +67,12 @@ export const Filtering = () => {
         },
         {
             name: "permissions",
-            selector: row => row.permissions,
+            selector: row => row.role,
             sortable: true,
             center: true,
             conditionalCellStyles: [
                 {
-                    when: row => row.permissions === 'Employe',
+                    when: row => row.role === 'Employe',
                     style: {
                         borderRadius: '25px',
                         margin: '7px 5px 7px 5px',
@@ -119,7 +81,7 @@ export const Filtering = () => {
                     },
                 },
                 {
-                    when: row => row.permissions === 'Admin',
+                    when: row => row.role === 'Admin',
                     style: {
                         borderRadius: '25px',
                         margin: '7px 5px 7px 5px',
@@ -129,7 +91,7 @@ export const Filtering = () => {
                     },
                 },
                 {
-                    when: row => row.permissions === 'Student',
+                    when: row => row.role === 'Student',
                     style: {
                         margin: '7px 5px 7px 5px',
                         borderRadius: '25px',
@@ -138,7 +100,7 @@ export const Filtering = () => {
                     },
                 },
                 {
-                    when: row => row.permissions === 'Guest',
+                    when: row => row.role === 'Guest',
                     style: {
                         margin: '7px 5px 7px 5px',
                         borderRadius: '25px',
@@ -166,22 +128,85 @@ export const Filtering = () => {
         }
     ];
 
-    const checkbox = React.forwardRef(({ onClick, ...rest }, ref) =>
-    {
-     return(
-         <>
-             <div className="form-check " style={{ backgroundColor: '' }}>
-                 <input 
-                     type="checkbox"
-                     className="form-check-input"
-                     ref={ref}
-                     onClick={ onClick }
-                     {...rest}
-                 />
-             </div>
-         </>
-     )
+    const checkbox = React.forwardRef(({ onClick, ...rest }, ref) => {
+        return (
+            <>
+                <div className="form-check " style={{ backgroundColor: '' }}>
+                    <input
+                        type="checkbox"
+                        className="form-check-input"
+                        ref={ref}
+                        onClick={onClick}
+                        {...rest}
+                    />
+                </div>
+            </>
+        )
     })
+
+//get data user
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        getUser();
+    }, [])
+
+    const getUser = async () => {
+        axios.get("http://localhost:3000/users", { withCredentials: 'true' })
+            .then((response) => {
+                setData(response.data);
+                console.log(data)
+            })
+    };
+    //logout
+    const logOut = async () => {
+        axios.delete("http://localhost:3000/logout", { withCredentials: 'true' })
+            .then((response) => {
+                console.log(response)
+                history.push("/");
+            })
+    };
+    //fungsi export.
+    function convertArrayOfObjectsToCSV(array) {
+        let result;
+        const columnDelimiter = ',';
+        const lineDelimiter = '\n';
+        const keys = Object.keys(data[0]);
+        result = '';
+        result += keys.join(columnDelimiter);
+        result += lineDelimiter;
+        array.forEach(item => {
+            let ctr = 0;
+            keys.forEach(key => {
+                if (ctr > 0) result += columnDelimiter;
+
+                result += item[key];
+                // eslint-disable-next-line no-plusplus
+                ctr++;
+            });
+            result += lineDelimiter;
+        });
+        return result;
+    }
+    // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
+    function downloadCSV(array) {
+        const link = document.createElement('a');
+        let csv = convertArrayOfObjectsToCSV(array);
+        if (csv == null) return;
+
+        const filename = 'export.csv';
+
+        if (!csv.match(/^data:text\/csv/i)) {
+            csv = `data:text/csv;charset=utf-8,${csv}`;
+        }
+
+        link.setAttribute('href', encodeURI(csv));
+        link.setAttribute('download', filename);
+        link.click();
+    }
+    const Export = ({ onExport }) => <Button className="content2" onClick={e => onExport(e.target.value)}>Export</Button>;
+
+
+
 
     //modal edit
 
@@ -226,8 +251,7 @@ export const Filtering = () => {
 
     const filterPerm = [...new Set(data.map((item) => item.permissions))];
     const filteredItems = data.filter(
-        item => item.name.toLowerCase().includes(filterText.toLowerCase())
-            && item.email.toLowerCase().includes(filterE.toLowerCase()) && item.permissions.includes(filterS),
+        item => item.email.toLowerCase().includes(filterE.toLowerCase()) && item.role.includes(filterS),
     );
 
     //download csv {file}
@@ -235,6 +259,7 @@ export const Filtering = () => {
 
     return (
         <div className="back mt-4">
+            <div><Button onClick={logOut}>logout</Button></div>
             <div className="content d-flex justify-content-between mb-3">
                 <div>
                     <input className="content1"
@@ -264,7 +289,7 @@ export const Filtering = () => {
                         onChange={(e) => setFilterE(e.target.value)}
                     /></div>
                 <div>
-                    <span className="end" style={{marginRight:'35px'}}> {actionsMemo} </span>
+                    <span className="end" style={{ marginRight: '35px' }}> {actionsMemo} </span>
                     <span><Button className="content3" onClick={handleBuka}> + New User </Button></span>
                     <Modal
                         show={buka}

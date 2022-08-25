@@ -1,13 +1,15 @@
 import { Form, Container, Button, Card } from "react-bootstrap";
-import React, { useState  } from "react";
+import React, { useState } from "react";
 import logo from '../assets/image/D.png';
 import "../style/style.css";
 import { useHistory, Link } from "react-router-dom";
 
+import axios from "axios";
+
 
 function LForm() {
     const history = useHistory();
-
+    const [data, setData] = useState([]);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [msg, setMsg] = useState('');
@@ -23,18 +25,14 @@ function LForm() {
         e.preventDefault();
         let result = await fetch("http://localhost:3000/login", {
             method: 'POST',
+            credentials : "include", 
             body: JSON.stringify({ email, password }),
             headers: {
                 "Content-Type": "application/json"
             }
-        }).catch((error) => {
-            console.log(error);
-        });
+        })
         if (result.status === 200) {
-            result = await result.json();
-            console.warn(result)
-            localStorage.setItem('token', JSON.stringify(result));
-            history.push("/muser");
+            history.push("/mstaff");
         } else {
             setMsg(true);
         }
@@ -46,7 +44,7 @@ function LForm() {
                     <Card>
                         <Card.Body>
                             <Card.Title className="text-center">
-                                <img src={logo} alt="logo awal" className="logoD rounded-circle"/>
+                                <img src={logo} alt="logo awal" className="logoD rounded-circle" />
                                 <div className="text-muted p-2">Dashboard</div>
                                 <h3>Log In to Dasboard</h3>
                                 <div className="text-muted p-2 mt-3">Enter your email and password below</div>
@@ -63,7 +61,7 @@ function LForm() {
                                         <Form.Label>EMAIL</Form.Label>
                                         <Form.Control size="lg" type="email" placeholder="Email address"
                                             onChange={handleEmailChange} value={email} />
-                                        
+
                                     </Form.Group>
 
                                     <Form.Group className="mb-3" controlId="formBasicPassword">

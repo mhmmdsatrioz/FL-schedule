@@ -1,11 +1,12 @@
 import { Button, Row, Col, Modal, Form } from "react-bootstrap";
-import { data } from "../assets/data/mockData";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../style/style.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import DataTable from "react-data-table-component";
 import moment from "moment";
+import axios from "axios";
+
 
 //style
 const customStyles = {
@@ -46,12 +47,48 @@ const paginationComponentOptions = {
 
 //Crud, select, search
 export const Mstaff = () => {
+    const [data, setData] = useState([]);
+    //menampilkan employee
+    useEffect(() => {
+          getEmployee();
+    }, [])
+
+    const getEmployee = async () => {
+        axios.get("http://localhost:3000/employee",{withCredentials:'true'})
+          .then((response) => {
+            setData(response.data);
+            console.log(data)
+          })
+      };
+    //menambah employee
+    const addEmployee = async () => {
+        axios.post("http://localhost:3000/employee",{
+            name_employee,
+            address,
+            phone,
+            gender,
+            department,
+            user_id
+        },{withCredentials:'true'}).then(() => {
+            console.log();
+            getEmployee();
+          });
+         
+    };
+
+    //filtering
+    const [filterText, setFilterText] = React.useState('');
+    const filteredItems = data.filter(
+        item => item.name_employee.toLowerCase().includes(filterText.toLowerCase())
+           
+    );
+   
     //menampilkan kolom dan isi tabel.
     const columns = [
         {
             name: "Name",
             sortable: true,
-            selector: row => row.name,
+            selector: row => row.name_employee,
             center: true,
         },
         {
@@ -61,14 +98,8 @@ export const Mstaff = () => {
             center: true,
         },
         {
-            name: "email",
-            selector: row => row.email,
-            sortable: true,
-            center: true,
-        },
-        {
-            name: "skill",
-            selector: row => row.skill,
+            name: "department",
+            selector: row => row.department,
             sortable: true,
             center: true,
 
@@ -86,16 +117,23 @@ export const Mstaff = () => {
                 <div>
                     <Row>
                         <Col>
-                            <FontAwesomeIcon size="lg" icon={faEdit} onClick={() =>handleShow(row.id)} />
+                            <FontAwesomeIcon size="lg" icon={faEdit} onClick={() => handleShow(row.id)} />
+                        </Col>
+                        <Col>
+                            <FontAwesomeIcon size="lg" icon={faEdit} onClick={() => handleEdit(row.id)} />
                         </Col>
                     </Row>
                 </div>
             )
         }
     ];
-   
 
     //modal edit
+    const [tampil, setTampil] = useState(false);
+    const handleTtp = () => setTampil(false);
+    const handleEdit = () => setTampil(true);
+
+    //modal jadwal
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -104,19 +142,37 @@ export const Mstaff = () => {
     const [buka, setBuka] = useState(false);
     const handleTutup = () => setBuka(false);
     const handleBuka = () => setBuka(true);
+    //add employee
+    const [name_employee, setNameEmployee] = useState('');
+    const [address, setAddress] = useState('');
+    const [phone, setPhone] = useState('');
+    const [gender, setGender] = useState('');
+    const [department, setDepartment] = useState('');
+    const [user_id, setUserid] = useState('');
+    const handleAddress = e => {
+        setAddress(e.target.value)
+    };
+    const handleUserid = e => {
+        setUserid(e.target.value)
+    };
+    const handleDepartment = e => {
+        setDepartment(e.target.value)
+    };
+    const handleGender = e => {
+        setGender(e.target.value)
+    };
+    const handlePhone = e => {
+        setPhone(e.target.value)
+    };
+    const handleName = e => {
+        setNameEmployee(e.target.value)
+    };
 
     //select row
     const [selectedRows, setSelectedRows] = React.useState([]);
     const handleRowSelected = React.useCallback(state => {
         setSelectedRows(state.selectedRows);
     }, []);
-
-
-    //filtering
-    const [filterText, setFilterText] = React.useState('');
-    const filteredItems = data.filter(
-        item => item.name.toLowerCase().includes(filterText.toLowerCase())
-    );
 
     //jadwal
     const [senin, setSenin] = React.useState('');
@@ -127,92 +183,145 @@ export const Mstaff = () => {
     const [jumat, setJumat] = React.useState('');
     const [sabtu, setSabtu] = React.useState('');
     const [istirahat, setIstirahat] = React.useState('');
-    var travelTime = moment(setIstirahat).add({ minutes : 60 });
+    var travelTime = moment(setIstirahat).add({ minutes: 60 });
 
     return (
         <div className="back mt-3">
             <div className="content d-flex mb-4 ">
-                
-                    <h5 className="TextU pt-1">User List</h5>
-                    <Button style={{marginRight:"30px", backgroundColor:'#233EAE', height:"37px", width:"135px", borderRadius:"50px" }}
+
+                <h5 className="TextU pt-1">User List</h5>
+                <Button style={{ marginRight: "30px", backgroundColor: '#233EAE', height: "37px", width: "135px", borderRadius: "50px" }}
                     onClick={handleBuka}> ADD NEW   +</Button>
-                    <input className="text-center"
-                    style={{color:"white",background:"#233EAE",borderRadius:"50px", marginBottom:"20px", height:"37px", width:"135px"  }}
-                        id="search"
-                        type="text"
-                        placeholder=" 
+                <input className="text-center"
+                    style={{ color: "white", background: "#233EAE", borderRadius: "50px", marginBottom: "20px", height: "37px", width: "135px" }}
+                    id="search"
+                    type="text"
+                    placeholder=" 
                         Search ..."
-                        aria-label="Search Input"
-                        value={filterText}
-                        onChange={(e) => setFilterText(e.target.value)}
-                    />
-            
-                    <Modal
-                        show={buka}
-                        onHide={handleTutup}
-                        backdrop="static"
-                        size="lg"
-                        keyboard={false}
-                        centered
-                    >
-                        <Modal.Header closeButton>
-                            <Modal.Title>New User</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form>
-                                <Row>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label>Name</Form.Label>
-                                            <Form.Control type="text" placeholder="Full Name" />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label>Skill</Form.Label>
-                                            <Form.Control type="text" placeholder="Skill" />
-                                        </Form.Group>
+                    aria-label="Search Input"
+                    value={filterText}
+                    onChange={(e) => setFilterText(e.target.value)}
+                />
 
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Email Id</Form.Label>
-                                            <Form.Control type="email" placeholder="Email" />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Phone Number</Form.Label>
-                                            <Form.Control type="text" placeholder="Phone Number" />
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Password</Form.Label>
-                                            <Form.Control type="password" placeholder="Password" />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Conf Password</Form.Label>
-                                            <Form.Control type="password" placeholder="Confirm Password" />
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-                                <Row className="col-md-8 mx-auto">
-                                    <Button bsPrefix="addButton" variant="primary" type="submit" >
-                                        Save
-                                    </Button>
-                                </Row>
+                <Modal
+                    show={buka}
+                    onHide={handleTutup}
+                    backdrop="static"
+                    size="lg"
+                    keyboard={false}
+                    centered
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Edit User</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form onClick={addEmployee}>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                        <Form.Label>Name</Form.Label>
+                                        <Form.Control type="text" placeholder="Full Name" onChange={handleName} value={name_employee} />
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                        <Form.Label>Address</Form.Label>
+                                        <Form.Control type="text" placeholder="address" onChange={handleAddress} value={address}/>
+                                    </Form.Group>
 
-                            </Form>
-                        </Modal.Body>
-                    </Modal>
-                
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                                        <Form.Label>Gender</Form.Label>
+                                        <Form.Control type="text" placeholder="Gender" onChange={handleGender} value={gender}/>
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                                        <Form.Label>Phone Number</Form.Label>
+                                        <Form.Control type="text" placeholder="Phone Number" onChange={handlePhone} value={phone}/>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                                        <Form.Label>Department</Form.Label>
+                                        <Form.Control type="text" placeholder="Gender" onChange={handleDepartment} value={department}/>
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                   <Form.Group className="mb-3" controlId="formBasicPassword">
+                                        <Form.Label>user_id</Form.Label>
+                                        <Form.Control type="text" placeholder="Gender" onChange={handleUserid} value={user_id}/>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row className="col-md-8 mx-auto">
+                                <Button bsPrefix="addButton" variant="primary" type="submit" >
+                                    Save
+                                </Button>
+                            </Row>
+
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+
+                <Modal
+                    show={tampil}
+                    onHide={handleTtp}
+                    backdrop="static"
+                    size="lg"
+                    keyboard={false}
+                    centered
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>New User</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                        <Form.Label>Name</Form.Label>
+                                        <Form.Control type="text" placeholder="Full Name" />
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                                        <Form.Label>Department</Form.Label>
+                                        <Form.Control type="text" placeholder="Skill" />
+                                    </Form.Group>
+
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                                        <Form.Label>Gender</Form.Label>
+                                        <Form.Control type="text" placeholder="Gender" />
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                                        <Form.Label>Phone Number</Form.Label>
+                                        <Form.Control type="text" placeholder="Phone Number" />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+
+                            <Row className="col-md-8 mx-auto">
+                                <Button bsPrefix="addButton" variant="primary" type="submit" >
+                                    Save
+                                </Button>
+                            </Row>
+
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+
             </div>
             <div >
                 <Modal
@@ -269,18 +378,18 @@ export const Mstaff = () => {
                                             className="inputJam"
                                             value={istirahat}
                                             placeholder="Time"
-                                            onChange={(e) => setIstirahat(e.target.value)} 
-                                            id="startTime"/>
+                                            onChange={(e) => setIstirahat(e.target.value)}
+                                            id="startTime" />
                                     </Col>
                                     sampai
                                     <Col>
-                                    <input type="time"
+                                        <input type="time"
                                             className="inputJam"
                                             value={travelTime}
                                             placeholder="Time"
-                                            onChange={(e) => setIstirahat(e.target.value)} 
-                                            id="startTime"/>
-                                            
+                                            onChange={(e) => setIstirahat(e.target.value)}
+                                            id="startTime" />
+
                                     </Col>
                                 </Row>
                                 <Row>
@@ -312,18 +421,18 @@ export const Mstaff = () => {
                                             className="inputJam"
                                             value={istirahat}
                                             placeholder="Time"
-                                            onChange={(e) => setIstirahat(e.target.value)} 
-                                            id="startTime"/>
+                                            onChange={(e) => setIstirahat(e.target.value)}
+                                            id="startTime" />
                                     </Col>
                                     sampai
                                     <Col>
-                                    <input type="time"
+                                        <input type="time"
                                             className="inputJam"
                                             value={travelTime}
                                             placeholder="Time"
-                                            onChange={(e) => setIstirahat(e.target.value)} 
-                                            id="startTime"/>
-                                            
+                                            onChange={(e) => setIstirahat(e.target.value)}
+                                            id="startTime" />
+
                                     </Col>
                                 </Row>
                                 <Row>
@@ -371,6 +480,7 @@ export const Mstaff = () => {
                     noHeader
                     fixedHeaderScrollHeight="760px"
                     customStyles={customStyles}
+                    keyField
                 />
             </div>
         </div >

@@ -84,14 +84,6 @@ function SignIn() {
                      onChange={handleConfPasswordChange} value={confPassword}
                     />
                   </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label className="d-flex justify-content-between">
-                      <div>role </div>
-                    </Form.Label>
-                    <Form.Control size="lg" type="text" placeholder="role"
-                      onChange={handleRole} value={role}
-                    />
-                  </Form.Group>
                   <div className="mb d-grid">
                     <Button variant="primary" type="submit" className="button is-success is-fullwidth"
                     >

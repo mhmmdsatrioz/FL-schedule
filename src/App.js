@@ -8,14 +8,7 @@ import LForm from "./halamanAwal/FormLogin"
 import SignUp from "./halamanAwal/SignUp"
 import Filtering from "./UserManagement/UM";
 import Mstaff from "./Mstaff/Mstaff";
-function setToken(userToken) {
-  sessionStorage.setItem('token', JSON.stringify(userToken));
-}
-function getToken() {
-  const tokenString = sessionStorage.getItem('token');
-  const userToken = JSON.parse(tokenString);
-  return userToken?.token
-}
+
 function App() {
   return (
     <Router>
@@ -28,7 +21,7 @@ function App() {
           <Route exact path="/SignUp" component={SignUp} />
             <LayoutDashboard>
             <Route exact path="/muser" component={Filtering} />
-            <Route exact path="/Mstaff" component={Mstaff} />
+            <Route exact path="/mstaff" component={Mstaff} />
             
             </LayoutDashboard>
         </Switch>
