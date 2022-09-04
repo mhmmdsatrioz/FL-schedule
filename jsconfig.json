@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@page/*": ["pages/*"],
+      "@components/*": ["components/*"],
+      "@layout/*": ["layout/*"],
+      "@Mstaff/*": ["Mstaff/*"],
+      "@style/*": ["style/*"],
+      "@UserManagement/*": ["UserManagement/*"],
+      "@halamanAwal/*": ["halamanAwal/*"],
+      "@API/*": ["API/*"],
+      "@assets/*": ["assets/*"]
+    }
+  }
+}

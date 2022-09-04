@@ -3,29 +3,26 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { useState } from "react";
 
+const LayoutDashboard = ({ children }) => {
+  const [active, setActive] = useState(false);
+  console.log(active);
 
-const LayoutDashboard =({children}) =>{
-const [active, setActive] = useState(false);
-console.log(active);
-
-    return(
-        <>
-        <div>
+  return (
+    <>
+      <div>
         <Sidebar active={active} />
         <Header active={active} setActive={setActive} />
         <main
-            className={
-            active
-                ? "content_active page-content p-5 mt-5"
-                : "page-content p-5 mt-5 content"
-            }
+          style={{ backgroundColor: "#f6f8fa" }}
+          className={
+            active ? "content_active page-content p-5 mt-5" : "page-content p-5 mt-5 content"
+          }
         >
-            {children}
+          {children}
         </main>
-        </div>
-        
-        </>
-    )
-}
+      </div>
+    </>
+  );
+};
 
 export default LayoutDashboard;

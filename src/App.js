@@ -4,10 +4,11 @@ import "@fontsource/roboto";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Switch, Route } from "react-router-dom";
 import Login from "./halamanAwal/Login";
-import LForm from "./halamanAwal/FormLogin"
-import SignUp from "./halamanAwal/SignUp"
+import LForm from "./halamanAwal/FormLogin";
+import SignUp from "./halamanAwal/SignUp";
 import Filtering from "./UserManagement/UM";
 import Mstaff from "./Mstaff/Mstaff";
+import Products from "./pages/Products/Products";
 
 function App() {
   return (
@@ -15,15 +16,15 @@ function App() {
       <div className="App wrapper">
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route exact path="/LForm" >
+          <Route exact path="/LForm">
             <LForm />
           </Route>
           <Route exact path="/SignUp" component={SignUp} />
-            <LayoutDashboard>
+          <LayoutDashboard>
             <Route exact path="/muser" component={Filtering} />
             <Route exact path="/mstaff" component={Mstaff} />
-            
-            </LayoutDashboard>
+            <Route exact path="/product" component={Products} />
+          </LayoutDashboard>
         </Switch>
       </div>
     </Router>
