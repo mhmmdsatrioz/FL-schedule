@@ -4,6 +4,8 @@ import styled from "@emotion/styled";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import { WiTime4 } from "react-icons/wi";
+import { ConfirmAlert } from "./ConfirmAlert.components";
+import { deleteProductAPI } from "API/ProductAPI";
 
 const Card = styled.div`
   width: 290px;
@@ -98,7 +100,14 @@ const Footer = styled.div`
   }
 `;
 
-const CardComponents = ({ title, description, subTitle, price, days }) => {
+const CardComponents = ({ title, description, subTitle, id, price, days, data, setData }) => {
+  const handleDelete = async (id) => {
+    const title = "Are you sure?";
+    const text = "Once deleted, you will not be able to recover this file!";
+    const isSuccess = "Poof! Your product file has been deleted";
+    ConfirmAlert({ title, text, isSuccess, deleteProductAPI, id, setData, data });
+  };
+
   return (
     <Card>
       <h1>{title}</h1>
@@ -125,7 +134,7 @@ const CardComponents = ({ title, description, subTitle, price, days }) => {
 
       <Footer>
         <BiEdit className="edit" size={20} />
-        <RiDeleteBin6Line className="delete" size={20} />
+        <RiDeleteBin6Line onClick={() => handleDelete(id)} className="delete" size={20} />
       </Footer>
     </Card>
   );

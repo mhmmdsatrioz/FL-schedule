@@ -6,7 +6,12 @@ export const getProductsAPI = async () => {
   return response.data;
 };
 
-export const DetailProductAPI = async (id) => {
+export const detailProductAPI = async (id) => {
   const response = await API.HTTP.get(`${BASE_URL}/${id}`);
+  return response.data;
+};
+
+export const deleteProductAPI = async (id) => {
+  const response = await API.HTTP.delete(`${BASE_URL}/${id}`);
   return response.data;
 };

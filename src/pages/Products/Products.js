@@ -13,6 +13,7 @@ const Wrapper = styled.div`
 
 const Products = () => {
   const [dataProduct, setDataProduct] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       const res = await getProductsAPI();
@@ -20,14 +21,17 @@ const Products = () => {
       setDataProduct(res);
     };
     fetchData();
-  }, []);
+  }, [setDataProduct]);
   return (
     <div>
       <Wrapper>
         {dataProduct.map((item) => (
           <div key={item.id}>
             <CardComponents
+              setData={setDataProduct}
+              data={dataProduct}
               price={item.price}
+              id={item.id}
               days={item.days_period}
               title={item.name}
               description={item.description}
