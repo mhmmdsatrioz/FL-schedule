@@ -12,3 +12,16 @@ const API = {
 };
 
 export default API;
+
+const data = [
+  {
+    id: "1",
+    nama: "john",
+    umur: 19
+  },
+  {
+    id: "2",
+    nama: "adi",
+    umur: 19
+  }
+];

@@ -9,6 +9,7 @@ import SignUp from "./halamanAwal/SignUp";
 import Filtering from "./UserManagement/UM";
 import Mstaff from "./Mstaff/Mstaff";
 import Products from "./pages/Products/Products";
+import AddProducts from "./pages/Products/AddProduct";
 import Calendars from "./pages/Calendar/Calendars";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route exact path="/muser" component={Filtering} />
             <Route exact path="/mstaff" component={Mstaff} />
             <Route exact path="/product" component={Products} />
+            <Route exact path="/product/add" component={AddProducts} />
             <Route exact path="/mjadwal" component={Calendars} />
           </LayoutDashboard>
         </Switch>

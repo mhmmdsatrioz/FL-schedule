@@ -80,7 +80,7 @@ function Sidebar({ active }) {
               </NavItem>
             ))}
           </Nav>
-          <Nav className="flex-column text-muted notes">
+          {/* <Nav className="flex-column text-muted notes">
             <NavItem className="text-muted">
               <NavLink to={"/notes"} className="nav-link rounded-pill" activeClassName="active">
                 <div className="text-align-center">
@@ -89,8 +89,7 @@ function Sidebar({ active }) {
                 </div>
               </NavLink>
             </NavItem>
-            <></>
-          </Nav>
+          </Nav> */}
         </div>
       </div>
     </div>

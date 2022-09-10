@@ -5,7 +5,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import { WiTime4 } from "react-icons/wi";
 import { ConfirmAlert } from "./ConfirmAlert.components";
-import { deleteProductAPI } from "API/ProductAPI";
+import { deleteProductAPI } from "../API/ProductAPI";
 
 const Card = styled.div`
   width: 290px;

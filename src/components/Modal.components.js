@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { postScheduleAPI } from "API/ClassSchedule";
+import { postScheduleAPI } from "../API/ClassSchedule";
 import toast from "react-hot-toast";
-import { putScheduleAPI } from "API/ClassSchedule";
+import { putScheduleAPI } from "../API/ClassSchedule";
 
 const WrapperInput = styled.div`
   display: flex;

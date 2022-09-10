@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import ModalComponents from "components/Modal.components";
-import { getScheduleAPI } from "API/ClassSchedule";
+import ModalComponents from "../../components/Modal.components";
+import { getScheduleAPI } from "../../API/ClassSchedule";
 import moment from "moment";
-import Loading from "components/loading/Loading";
+import Loading from "../../components/loading/Loading";
 
 const CalendarComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
