@@ -19,7 +19,7 @@ const Notes = () => {
   return (
     <>
       <div>
-        <NavLinks to="/notes/   add">Create Notes</NavLinks>
+        <NavLinks to="/notes/add">Create Notes</NavLinks>
       </div>
     </>
   );
