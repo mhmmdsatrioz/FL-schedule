@@ -11,6 +11,9 @@ import Mstaff from "./Mstaff/Mstaff";
 import Products from "./pages/Products/Products";
 import AddProducts from "./pages/Products/AddProduct";
 import Calendars from "./pages/Calendar/Calendars";
+import Notes from "./pages/Notes/Notes";
+import AddNotes from "./pages/Notes/AddNotes";
+import Home from "./pages";
 
 function App() {
   return (
@@ -23,11 +26,14 @@ function App() {
           </Route>
           <Route exact path="/SignUp" component={SignUp} />
           <LayoutDashboard>
+            <Route exact path="/home" component={Home} />
             <Route exact path="/muser" component={Filtering} />
             <Route exact path="/mstaff" component={Mstaff} />
             <Route exact path="/product" component={Products} />
             <Route exact path="/product/add" component={AddProducts} />
             <Route exact path="/mjadwal" component={Calendars} />
+            <Route exact path="/notes" component={Notes} />
+            <Route exact path="/notes/add" component={AddNotes} />
           </LayoutDashboard>
         </Switch>
       </div>

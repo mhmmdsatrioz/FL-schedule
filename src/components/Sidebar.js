@@ -13,6 +13,7 @@ import {
   faSlidersH,
   faIdBadge,
   faChartPie,
+  faNoteSticky,
   faStickyNote
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -56,6 +57,11 @@ const tabs = [
     route: "/mreport",
     icon: faChartLine,
     label: "Manajemen Report"
+  },
+  {
+    route: "/notes",
+    icon: faStickyNote,
+    label: "Notes"
   }
 ];
 
